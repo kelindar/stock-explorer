@@ -85,8 +85,8 @@ func (p *Provider) GetDividendHistory(symbol string) ([]finance.DividendEntry, e
 	stmt, err := db.Query(
 		"select * from yahoo.finance.dividendhistory where symbol = ? and startDate = ? and endDate = ?",
 		symbol,
-		"1962-01-01",
-		"2016-03-10")
+		time.Now().AddDate(-5, 0, 0).Format("2006-01-02"),
+		time.Now().Format("2006-01-02"))
 	if err != nil {
 		return nil, err
 	}

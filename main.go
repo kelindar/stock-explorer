@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 
+	"github.com/davecgh/go-spew/spew"
+
 	"./finance/yahoo"
 )
 
@@ -18,7 +20,7 @@ func main() {
 
 	for _, quote := range quotes {
 		fmt.Printf("%v\n", quote.Name)
-		//spew.Dump(quote)
+		spew.Dump(quote)
 
 		hist, err := provider.GetDividendHistory(quote.Symbol)
 		if err != nil {
