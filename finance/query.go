@@ -6,6 +6,7 @@ import "time"
 type Provider interface {
 	GetQuotes(symbols ...string) ([]Quote, error)
 	GetDividendHistory(symbol string) ([]DividendEntry, error)
+	GetFinancials(symbol string) ([]Financials, error)
 }
 
 // DividendEntry represents a historican entry of a dividend
@@ -17,9 +18,12 @@ type DividendEntry struct {
 
 // Quote represents a single quote for a particular stock symbol
 type Quote struct {
-	Symbol   string /* e.g.: VEUR.AS, Vanguard dev. europe on Amsterdam */
+	Symbol   string
 	Name     string
 	Exchange string
+
+	/* financials */
+	Financials string
 
 	/* last actualization of the results */
 	Updated time.Time
@@ -45,4 +49,50 @@ type Quote struct {
 	YearLow, YearHigh float64
 
 	Ma50, Ma200 float64 // 200- and 50-day moving average
+
+}
+
+// Financials represents financials for a symbol
+type Financials struct {
+	Symbol string
+	Date   time.Time
+
+	Income   IncomeStatement
+	Balance  BalanceSheet
+	CashFlow CashFlow
+}
+
+// IncomeStatement represents a short information about the income
+type IncomeStatement struct {
+	Symbol string
+	Date   time.Time
+
+	Revenue              float64
+	OperatingIncome      float64
+	NetIncome            float64
+	EarningsPerShare     float64
+	DilutedAverageShares float64
+}
+
+// BalanceSheet represents a summarized information for a balance sheet
+type BalanceSheet struct {
+	Symbol string
+	Date   time.Time
+
+	CurrentAssets      float64
+	NonCurrentAssets   float64
+	TotalAssets        float64
+	CurrentLiabilities float64
+	TotalLiabilities   float64
+	StockholdersEquity float64
+}
+
+// CashFlow represents a summarized information for a cash flow statement
+type CashFlow struct {
+	Symbol string
+	Date   time.Time
+
+	CashFromOperations  float64
+	CapitalExpenditures float64
+	FreeCashFlow        float64
 }

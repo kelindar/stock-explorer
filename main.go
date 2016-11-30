@@ -11,7 +11,7 @@ import (
 func main() {
 	provider := yahoo.NewProvider()
 
-	symbols := []string{"AAPL", "WSR"}
+	symbols := []string{"WSR"}
 
 	quotes, err := provider.GetQuotes(symbols...)
 	if err != nil {
@@ -22,14 +22,25 @@ func main() {
 		fmt.Printf("%v\n", quote.Name)
 		spew.Dump(quote)
 
-		hist, err := provider.GetDividendHistory(quote.Symbol)
+		fin, err := provider.GetFinancials(quote.Symbol)
 		if err != nil {
-			panic(err)
+			fmt.Println("(no financials found)")
+			continue
+		}
+
+		for _, f := range fin {
+			fmt.Printf("%v\t%v\t%v\n", f.Symbol, f.Date, f.Income.NetIncome)
+		}
+
+		/*hist, err := provider.GetDividendHistory(quote.Symbol)
+		if err != nil {
+			fmt.Println("(no dividend history found)")
+			continue
 		}
 
 		for _, dividend := range hist {
 			fmt.Printf("%v\t%v\t%v\n", dividend.Symbol, dividend.Date, dividend.Value)
-		}
+		}*/
 	}
 
 }

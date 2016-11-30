@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"../"
+	"../scrape"
 	"github.com/aktau/gofinance/util"
 )
 
@@ -35,43 +36,39 @@ func (p *Provider) GetQuotes(symbols ...string) ([]finance.Quote, error) {
 
 	for stmt.Next() {
 		var data map[string]interface{}
-		var date time.Time
+
 		stmt.Scan(&data)
 
 		quote := finance.Quote{}
 		quote.Symbol = data["Symbol"].(string)
 		quote.Name = data["Name"].(string)
 		quote.Exchange = data["StockExchange"].(string)
+		quote.Updated = readDate(data, "LastTradeDate")
 
-		date, _ = time.Parse("1/2/2006", data["LastTradeDate"].(string))
-		quote.Updated = date
+		quote.Volume = readInt(data, "Volume")
+		quote.AvgDailyVolume = readInt(data, "AverageDailyVolume")
 
-		quote.Volume, _ = strconv.ParseInt(data["Volume"].(string), 10, 64)
-		quote.AvgDailyVolume, _ = strconv.ParseInt(data["AverageDailyVolume"].(string), 10, 64)
+		quote.PeRatio = readFloat(data, "PERatio")
+		quote.EarningsPerShare = readFloat(data, "EarningsShare")
+		quote.DividendPerShare = readFloat(data, "DividendShare")
+		quote.DividendYield = readFloat(data, "DividendYield")
+		quote.DividendExDate = readDate(data, "ExDividendDate")
 
-		quote.PeRatio, _ = strconv.ParseFloat(data["PERatio"].(string), 64)
-		quote.EarningsPerShare, _ = strconv.ParseFloat(data["EarningsShare"].(string), 64)
-		quote.DividendPerShare, _ = strconv.ParseFloat(data["DividendShare"].(string), 64)
-		quote.DividendYield, _ = strconv.ParseFloat(data["DividendYield"].(string), 64)
+		quote.Bid = readFloat(data, "Bid")
+		quote.Ask = readFloat(data, "Ask")
 
-		date, _ = time.Parse("1/2/2006", data["ExDividendDate"].(string))
-		quote.DividendExDate = date
+		quote.Open = readFloat(data, "Open")
+		quote.PreviousClose = readFloat(data, "PreviousClose")
+		quote.LastTradePrice = readFloat(data, "LastTradePriceOnly")
+		quote.Change = readFloat(data, "Change")
 
-		quote.Bid, _ = strconv.ParseFloat(data["Bid"].(string), 64)
-		quote.Ask, _ = strconv.ParseFloat(data["Ask"].(string), 64)
+		quote.DayLow = readFloat(data, "DaysLow")
+		quote.DayHigh = readFloat(data, "DaysHigh")
+		quote.YearLow = readFloat(data, "YearLow")
+		quote.YearHigh = readFloat(data, "YearHigh")
 
-		quote.Open, _ = strconv.ParseFloat(data["Open"].(string), 64)
-		quote.PreviousClose, _ = strconv.ParseFloat(data["PreviousClose"].(string), 64)
-		quote.LastTradePrice, _ = strconv.ParseFloat(data["LastTradePriceOnly"].(string), 64)
-		quote.Change, _ = strconv.ParseFloat(data["Change"].(string), 64)
-
-		quote.DayLow, _ = strconv.ParseFloat(data["DaysLow"].(string), 64)
-		quote.DayHigh, _ = strconv.ParseFloat(data["DaysHigh"].(string), 64)
-		quote.YearLow, _ = strconv.ParseFloat(data["YearLow"].(string), 64)
-		quote.YearHigh, _ = strconv.ParseFloat(data["YearHigh"].(string), 64)
-
-		quote.Ma50, _ = strconv.ParseFloat(data["FiftydayMovingAverage"].(string), 64)
-		quote.Ma200, _ = strconv.ParseFloat(data["TwoHundreddayMovingAverage"].(string), 64)
+		quote.Ma50 = readFloat(data, "FiftydayMovingAverage")
+		quote.Ma200 = readFloat(data, "TwoHundreddayMovingAverage")
 
 		result = append(result, quote)
 	}
@@ -107,6 +104,55 @@ func (p *Provider) GetDividendHistory(symbol string) ([]finance.DividendEntry, e
 	}
 
 	return result, nil
+}
+
+// GetFinancials gets the financial information for the symbol
+func (p *Provider) GetFinancials(symbol string) ([]finance.Financials, error) {
+	m := scrape.NewMorningstar()
+	return m.GetFinancials(symbol)
+}
+
+// Reads an integer
+func readInt(data map[string]interface{}, name string) int64 {
+	str, ok := data[name].(string)
+	if !ok {
+		return 0
+	}
+
+	result, err := strconv.ParseInt(str, 10, 64)
+	if err != nil {
+		return 0
+	}
+	return result
+}
+
+// Reads a date
+func readDate(data map[string]interface{}, name string) time.Time {
+	str, ok := data[name].(string)
+	if !ok {
+		return time.Time{}
+	}
+
+	date, err := time.Parse("1/2/2006", str)
+	if err != nil {
+		return time.Time{}
+	}
+
+	return date
+}
+
+// Reads a float, safely
+func readFloat(data map[string]interface{}, name string) float64 {
+	str, ok := data[name].(string)
+	if !ok {
+		return 0
+	}
+
+	result, err := strconv.ParseFloat(str, 64)
+	if err != nil {
+		return 0
+	}
+	return result
 }
 
 // Format symbols for WHERE clause
