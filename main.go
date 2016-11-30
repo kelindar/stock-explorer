@@ -22,11 +22,13 @@ func main() {
 		var request map[string]string
 		if err := json.Unmarshal(msg.Payload(), &request); err != nil {
 			fmt.Println("Error: Unable to parse the request")
+			return
 		}
 
 		quotes, err := provider.GetQuotes(request["symbol"])
 		if err != nil {
 			fmt.Println("Error: Unable to process the request")
+			return
 		}
 
 		response, _ := json.Marshal(quotes[0])

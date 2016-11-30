@@ -40,9 +40,9 @@ func (p *Provider) GetQuotes(symbols ...string) ([]finance.Quote, error) {
 		stmt.Scan(&data)
 
 		quote := finance.Quote{}
-		quote.Symbol = data["Symbol"].(string)
-		quote.Name = data["Name"].(string)
-		quote.Exchange = data["StockExchange"].(string)
+		quote.Symbol = readString(data, "Symbol")
+		quote.Name = readString(data, "Name")
+		quote.Exchange = readString(data, "StockExchange")
 		quote.Updated = readDate(data, "LastTradeDate")
 
 		quote.Volume = readInt(data, "Volume")
@@ -70,15 +70,17 @@ func (p *Provider) GetQuotes(symbols ...string) ([]finance.Quote, error) {
 		quote.Ma50 = readFloat(data, "FiftydayMovingAverage")
 		quote.Ma200 = readFloat(data, "TwoHundreddayMovingAverage")
 
-		// for each symbol we query, query the financials along with
-		// the dividend history.
-		quote.Financials, _ = p.GetFinancials(quote.Symbol)
-		quote.DividendHistory, _ = p.GetDividendHistory(quote.Symbol)
+		if quote.Name != "" {
+			// for each symbol we query, query the financials along with
+			// the dividend history.
+			quote.Financials, _ = p.GetFinancials(quote.Symbol)
+			quote.DividendHistory, _ = p.GetDividendHistory(quote.Symbol)
 
-		// Compute indicators
-		quote.DividendFrequency = quote.GetLastYearDividendFrequency()
-		quote.Profitability = quote.GetProfitability()
-		quote.Growth = quote.GetGrowth()
+			// Compute indicators
+			quote.DividendFrequency = quote.GetLastYearDividendFrequency()
+			quote.Profitability = quote.GetProfitability()
+			quote.Growth = quote.GetGrowth()
+		}
 
 		result = append(result, quote)
 	}
@@ -149,6 +151,15 @@ func readDate(data map[string]interface{}, name string) time.Time {
 	}
 
 	return date
+}
+
+// Reads a string, safely
+func readString(data map[string]interface{}, name string) string {
+	str, ok := data[name].(string)
+	if !ok {
+		return ""
+	}
+	return str
 }
 
 // Reads a float, safely

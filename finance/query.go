@@ -69,6 +69,7 @@ type IncomeStatement struct {
 	Revenue              float64
 	OperatingIncome      float64
 	NetIncome            float64
+	NetInterestIncome    float64
 	EarningsPerShare     float64
 	DilutedAverageShares float64
 }
@@ -78,6 +79,8 @@ type BalanceSheet struct {
 	Symbol string
 	Date   time.Time
 
+	NetLoans           float64
+	Deposits           float64
 	CurrentAssets      float64
 	NonCurrentAssets   float64
 	TotalAssets        float64
@@ -91,6 +94,8 @@ type CashFlow struct {
 	Date   time.Time
 
 	CashFromOperations  float64
+	CashFromInvesting   float64
+	CashFromFinancing   float64
 	CapitalExpenditures float64
 	FreeCashFlow        float64
 }

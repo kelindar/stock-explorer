@@ -67,34 +67,53 @@ func (p *Morningstar) GetFinancials(symbol string) ([]finance.Financials, error)
 		f.Income = finance.IncomeStatement{}
 		f.Income.Symbol = symbol
 		f.Income.Date = date
-		f.Income.Revenue = readFloat(parsed[4][offset])
-		f.Income.OperatingIncome = readFloat(parsed[5][offset])
-		f.Income.NetIncome = readFloat(parsed[6][offset])
-		f.Income.EarningsPerShare = readFloat(parsed[7][offset])
-		f.Income.DilutedAverageShares = readFloat(parsed[8][offset])
+		f.Income.Revenue = readValue(parsed, "Revenue", offset)
+		f.Income.NetInterestIncome = readValue(parsed, "Net Interest Income", offset)
+		f.Income.OperatingIncome = readValue(parsed, "Operating Income", offset)
+		f.Income.NetIncome = readValue(parsed, "Net Income", offset)
+		f.Income.EarningsPerShare = readValue(parsed, "Earnings Per Share", offset)
+		f.Income.DilutedAverageShares = readValue(parsed, "Diluted Average Shares", offset)
 
 		// process balance sheet
 		f.Balance = finance.BalanceSheet{}
 		f.Balance.Symbol = symbol
 		f.Balance.Date = date
-		f.Balance.CurrentAssets = readFloat(parsed[10][offset])
-		f.Balance.NonCurrentAssets = readFloat(parsed[11][offset])
-		f.Balance.TotalAssets = readFloat(parsed[12][offset])
-		f.Balance.CurrentLiabilities = readFloat(parsed[13][offset])
-		f.Balance.TotalLiabilities = readFloat(parsed[14][offset])
+		f.Balance.NetLoans = readValue(parsed, "Net Loans", offset)
+		f.Balance.Deposits = readValue(parsed, "Deposits", offset)
+		f.Balance.CurrentAssets = readValue(parsed, "Current Assets", offset)
+		f.Balance.NonCurrentAssets = readValue(parsed, "Non Current Assets", offset)
+		f.Balance.TotalAssets = readValue(parsed, "Total Assets", offset)
+		f.Balance.CurrentLiabilities = readValue(parsed, "Current Liabilities", offset)
+		f.Balance.TotalLiabilities = readValue(parsed, "Total Liabilities", offset)
 
 		// process cash flow sheet
 		f.CashFlow = finance.CashFlow{}
 		f.CashFlow.Symbol = symbol
 		f.CashFlow.Date = date
-		f.CashFlow.CashFromOperations = readFloat(parsed[17][offset])
-		f.CashFlow.CapitalExpenditures = readFloat(parsed[18][offset])
-		f.CashFlow.FreeCashFlow = readFloat(parsed[19][offset])
+		f.CashFlow.CashFromOperations = readValue(parsed, "Cash From Operations", offset)
+		f.CashFlow.CashFromInvesting = readValue(parsed, "Cash From Investing", offset)
+		f.CashFlow.CashFromFinancing = readValue(parsed, "Cash From Financing", offset)
+		f.CashFlow.CapitalExpenditures = readValue(parsed, "Capital Expenditures", offset)
+		f.CashFlow.FreeCashFlow = readValue(parsed, "Free Cash Flow", offset)
 
 		result = append(result, f)
 	}
 
 	return result, nil
+}
+
+// Finds a value and reads it
+func readValue(data [][]string, name string, offset int) float64 {
+	for _, row := range data {
+		if row == nil || len(row) == 0 {
+			continue
+		}
+
+		if row[0] == name {
+			return readFloat(row[offset])
+		}
+	}
+	return 0
 }
 
 // Reads a float, safely
