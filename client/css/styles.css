@@ -41,3 +41,8 @@ body{
 	font-size: 0.90rem;
 	color: #000
 }
+
+.yahoo-chart{
+	border: solid 1px rgba(0, 0, 0, 0.15);
+    background: white;
+}

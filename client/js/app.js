@@ -73,34 +73,41 @@ emitter.on('message', function(msg){
 
     // log that we've received a message
     var data = msg.asObject();
-    console.log('emitter: received ', data);
+    console.log('emitter: received ', msg.asObject());
 
     // sort financials 
     if (data.Financials){
         data.Financials = data.Financials.sort(byDate)
     }
 
-    // sort financials 
-    if (data.DividendHistory != null){
+    // do some dividend analysis
+    if(data.DividendHistory != null){
         data.DividendHistory = data.DividendHistory.sort(byDate)
+
+        if (data.DividendYield < 2) data.DividendYieldRating = 'Low'
+        else if(data.DividendYield < 4) data.DividendYieldRating = 'Average'
+        else if(data.DividendYield < 6) data.DividendYieldRating = 'Above Average'
+        else if(data.DividendYield < 8) data.DividendYieldRating = 'High'
+        else if(data.DividendYield > 8) data.DividendYieldRating = 'Very High'
     }
 
     // bind the result to the screen
     vue.$data.result = data;
 
-    // make sure to empty the div
-    if (data.DividendHistory === null){
-        document.getElementById('dividends-chart').innerHTML = "";
-        return;
-    }
+    // add the chart once we bound the data
+    setTimeout(function(){
+        if (data.DividendHistory != null){
+            drawDividendChart(data);
+        }
+    }, 10);
+});
 
-
-
-    labels = []
-    series = []
+function drawDividendChart(data){
+    labels = [];
+    series = [];
     data.DividendHistory.forEach(function(d){
-        labels.push(formatDate(d.Date))
-        series.push(d.Value)
+        labels.push(formatDate(d.Date));
+        series.push(d.Value);
     });
 
     // apply the chart
@@ -116,7 +123,7 @@ emitter.on('message', function(msg){
                 }
             }
     });
-});
+}
 
 function formatDate(d){
     return d.substring(0, d.indexOf('-', 5))

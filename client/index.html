@@ -30,7 +30,7 @@
             </form>
         </div>
 
-        <div class="row">
+        <div class="row"  v-if="result.Symbol !== undefined">
             <div class="col-sm-7 left"><h3>{{result.Name}} <a target="blank" href="http://www.morningstar.com/stocks/xnas/{{result.Symbol}}/quote.html">{{result.Exchange}}:{{result.Symbol}}</a></h3></div>
             <div class="col-sm-5 right">
                 <h3>
@@ -40,27 +40,44 @@
             </div>
         </div>
 
-        <div class="row ">
-            <img class="col-sm-12" src="http://chart.finance.yahoo.com/z?s={{result.Symbol}}&t=6m&q=l&l=on&z=l&p=m50,m200" />
+
+        <div class="row" v-if="result.Symbol !== undefined">
+            <div class="col-sm-12">
+                <h4>Stock</h4>
+                <table class="table">
+                    <tr><th>Bid/Ask<th><td>{{result.Ask | currencyDisplay}} / {{result.Bid | currencyDisplay}}</td></tr>
+                    <tr><th>Suggested Price<th><td>If you want to buy this stock, place a limit order at about <b>{{(result.Ask + Math.abs(result.Ask - result.Bid) / 2) | currencyDisplay }}</b></td></tr>
+                    <tr><th>P/E Ratio<th><td> {{result.PeRatio}}</td></tr>
+                    <tr><th>Moving Averages<th><td>50 Days: {{result.Ma50 | currencyDisplay}}, 200 Days: {{result.Ma200 | currencyDisplay}}</td></tr>
+                    <tr><th>Low/High<th><td> Day Low: {{result.DayLow | currencyDisplay}},  Day High: {{result.DayHigh | currencyDisplay}}, Year Low: {{result.YearLow | currencyDisplay}}, Year High: {{result.YearHigh | currencyDisplay}}</td></tr>
+                </table>
+            </div>
+
+            <img class="col-sm-12 yahoo-chart" src="http://chart.finance.yahoo.com/z?s={{result.Symbol}}&t=6m&q=l&l=on&z=l&p=m50,m200" />
         </div>
 
-        <div class="row">
-
-      
-            <table class="table">
- 
-                <tr><th>Bid/Ask<th><td>{{result.Ask | currencyDisplay}}/{{result.Bid | currencyDisplay}}</td></tr>
-                <tr><th>Suggested Price<th><td>If you want to buy this stock, place a limit order at about <b>{{(result.Ask + Math.abs(result.Ask - result.Bid) / 2) | currencyDisplay }}</b></td></tr>
-
-            </table>
-
-        </div>
-
+        
         <div class="row" v-if="result.DividendFrequency > 0">
             <hr />
-            <h4>Dividend History</h4>
-            <h5>Dividends are paid <b>{{result.DividendFrequency}}x per year<b></h5>
-            <div id='dividends-chart' />
+            <div class="col-sm-12">
+                <h4>Dividends</h4>
+                <table class="table">
+ 
+                    <tr><th>Dividend/Earnings Per Share<th><td>{{result.DividendPerShare | currencyDisplay}} / {{result.EarningsPerShare | currencyDisplay}}</td></tr>
+                    <tr><th>Dividend Yield<th><td><span v-bind:class="{ red: result.DividendYield < 2, green: result.DividendYield > 4 }">{{result.DividendYield | percentageDisplay}} - {{result.DividendYieldRating}}</span></td></tr>
+                    <tr><th>Dividend Exercise Date<th><td>{{result.DividendExDate}}</td></tr>
+                    <tr><th>Helpful Indicators<th>
+                    <td>
+                        Cash From Operations: <span v-bind:class="{ red: result.Profitability.charCodeAt(0) > 67, green: result.Profitability.charCodeAt(0)  <= 67 }">{{result.Profitability}}</span>, 
+                        Revenue Growth: <span v-bind:class="{ red: result.Growth.charCodeAt(0) > 67, green: result.Growth.charCodeAt(0)  <= 67 }">{{result.Growth}}</span> 
+                    </td></tr>
+
+                </table>
+
+
+                <h5>Dividends are paid <b>{{result.DividendFrequency}}x per year<b></h5>
+                <div id='dividends-chart'></div>
+            </div>
         </div>
 
 
