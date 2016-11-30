@@ -9,4 +9,4 @@ ADD . /go/src/github.com/kelindar/stock-explorer
 
 # set the entry point
 #ENTRYPOINT /go/bin/stock-explorer
-CMD ["/bin/bash", "/deploy.sh"]
+CMD ["/bin/bash", "/docker/deploy.sh"]
