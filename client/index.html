@@ -95,112 +95,112 @@
                         </tr> 
                     </thead>
 
-                    <tr v-if="result.Financials[0].Income.Revenue > 0">
+                    <tr v-if="result.Financials[2].Income.Revenue != 0">
                         <th>Revenue</th>
                         <td>{{result.Financials[0].Income.Revenue | millionsDisplay}}</td>
                         <td>{{result.Financials[1].Income.Revenue | millionsDisplay}}</td>
                         <td>{{result.Financials[2].Income.Revenue | millionsDisplay}}</td>
                     </tr>
 
-                    <tr v-if="result.Financials[0].Income.OperatingIncome > 0">
+                    <tr v-if="result.Financials[2].Income.OperatingIncome != 0">
                         <th>Operating Income</th>
                         <td>{{result.Financials[0].Income.OperatingIncome | millionsDisplay}}</td>
                         <td>{{result.Financials[1].Income.OperatingIncome | millionsDisplay}}</td>
                         <td>{{result.Financials[2].Income.OperatingIncome | millionsDisplay}}</td>
                     </tr>
 
-                    <tr v-if="result.Financials[0].Income.NetIncome > 0">
+                    <tr v-if="result.Financials[2].Income.NetIncome != 0">
                         <th>Net Income</th>
                         <td>{{result.Financials[0].Income.NetIncome | millionsDisplay}}</td>
                         <td>{{result.Financials[1].Income.NetIncome | millionsDisplay}}</td>
                         <td>{{result.Financials[2].Income.NetIncome | millionsDisplay}}</td>
                     </tr>
 
-                  <tr v-if="result.Financials[0].Income.NetInterestIncome > 0">
+                  <tr v-if="result.Financials[2].Income.NetInterestIncome != 0">
                         <th>Net Interest Income</th>
                         <td>{{result.Financials[0].Income.NetInterestIncome | millionsDisplay}}</td>
                         <td>{{result.Financials[1].Income.NetInterestIncome | millionsDisplay}}</td>
                         <td>{{result.Financials[2].Income.NetInterestIncome | millionsDisplay}}</td>
                     </tr>
 
-                    <tr v-if="result.Financials[0].Balance.CurrentAssets > 0">
+                    <tr v-if="result.Financials[2].Balance.CurrentAssets != 0">
                         <th>Current Assets</th>
                         <td>{{result.Financials[0].Balance.CurrentAssets | millionsDisplay}}</td>
                         <td>{{result.Financials[1].Balance.CurrentAssets | millionsDisplay}}</td>
                         <td>{{result.Financials[2].Balance.CurrentAssets | millionsDisplay}}</td>
                     </tr>
 
-                    <tr v-if="result.Financials[0].Balance.NonCurrentAssets > 0">
+                    <tr v-if="result.Financials[2].Balance.NonCurrentAssets != 0">
                         <th>Non Current Assets</th>
                         <td>{{result.Financials[0].Balance.NonCurrentAssets | millionsDisplay}}</td>
                         <td>{{result.Financials[1].Balance.NonCurrentAssets | millionsDisplay}}</td>
                         <td>{{result.Financials[2].Balance.NonCurrentAssets | millionsDisplay}}</td>
                     </tr>
 
-                    <tr v-if="result.Financials[0].Balance.TotalAssets > 0">
+                    <tr v-if="result.Financials[2].Balance.TotalAssets != 0">
                         <th>Total Assets</th>
                         <td>{{result.Financials[0].Balance.TotalAssets | millionsDisplay}}</td>
                         <td>{{result.Financials[1].Balance.TotalAssets | millionsDisplay}}</td>
                         <td>{{result.Financials[2].Balance.TotalAssets | millionsDisplay}}</td>
                     </tr>
 
-                    <tr v-if="result.Financials[0].Balance.NetLoans > 0">
+                    <tr v-if="result.Financials[2].Balance.NetLoans != 0">
                         <th>Net Loans</th>
                         <td>{{result.Financials[0].Balance.NetLoans | millionsDisplay}}</td>
                         <td>{{result.Financials[1].Balance.NetLoans | millionsDisplay}}</td>
                         <td>{{result.Financials[2].Balance.NetLoans | millionsDisplay}}</td>
                     </tr>
                     
-                    <tr v-if="result.Financials[0].Balance.Deposits > 0">
+                    <tr v-if="result.Financials[2].Balance.Deposits != 0">
                         <th>Deposits</th>
                         <td>{{result.Financials[0].Balance.Deposits | millionsDisplay}}</td>
                         <td>{{result.Financials[1].Balance.Deposits | millionsDisplay}}</td>
                         <td>{{result.Financials[2].Balance.Deposits | millionsDisplay}}</td>
                     </tr>
 
-                    <tr v-if="result.Financials[0].Balance.CurrentLiabilities > 0">
+                    <tr v-if="result.Financials[2].Balance.CurrentLiabilities != 0">
                         <th>Current Liabilities</th>
                         <td>{{result.Financials[0].Balance.CurrentLiabilities | millionsDisplay}}</td>
                         <td>{{result.Financials[1].Balance.CurrentLiabilities | millionsDisplay}}</td>
                         <td>{{result.Financials[2].Balance.CurrentLiabilities | millionsDisplay}}</td>
                     </tr>
 
-                    <tr v-if="result.Financials[0].Balance.TotalLiabilities > 0">
+                    <tr v-if="result.Financials[2].Balance.TotalLiabilities != 0">
                         <th>Total Liabilities</th>
                         <td>{{result.Financials[0].Balance.TotalLiabilities | millionsDisplay}}</td>
                         <td>{{result.Financials[1].Balance.TotalLiabilities | millionsDisplay}}</td>
                         <td>{{result.Financials[2].Balance.TotalLiabilities | millionsDisplay}}</td>
                     </tr>
 
-                    <tr v-if="result.Financials[0].CashFlow.CashFromOperations > 0">
+                    <tr v-if="result.Financials[2].CashFlow.CashFromOperations != 0">
                         <th>Cash From Operations</th>
                         <td>{{result.Financials[0].CashFlow.CashFromOperations | millionsDisplay}}</td>
                         <td>{{result.Financials[1].CashFlow.CashFromOperations | millionsDisplay}}</td>
                         <td>{{result.Financials[2].CashFlow.CashFromOperations | millionsDisplay}}</td>
                     </tr>
 
-                    <tr v-if="result.Financials[0].CashFlow.CashFromInvesting > 0">
+                    <tr v-if="result.Financials[2].CashFlow.CashFromInvesting != 0">
                         <th>Cash From Investing</th>
                         <td>{{result.Financials[0].CashFlow.CashFromInvesting | millionsDisplay}}</td>
                         <td>{{result.Financials[1].CashFlow.CashFromInvesting | millionsDisplay}}</td>
                         <td>{{result.Financials[2].CashFlow.CashFromInvesting | millionsDisplay}}</td>
                     </tr>
                     
-                    <tr v-if="result.Financials[0].CashFlow.CashFromFinancing > 0">
+                    <tr v-if="result.Financials[2].CashFlow.CashFromFinancing != 0">
                         <th>Cash From Financing</th>
                         <td>{{result.Financials[0].CashFlow.CashFromFinancing | millionsDisplay}}</td>
                         <td>{{result.Financials[1].CashFlow.CashFromFinancing | millionsDisplay}}</td>
                         <td>{{result.Financials[2].CashFlow.CashFromFinancing | millionsDisplay}}</td>
                     </tr>
 
-                    <tr v-if="result.Financials[0].CashFlow.CapitalExpenditures > 0">
+                    <tr v-if="result.Financials[2].CashFlow.CapitalExpenditures != 0">
                         <th>Capital Expenditures</th>
                         <td>{{result.Financials[0].CashFlow.CapitalExpenditures | millionsDisplay}}</td>
                         <td>{{result.Financials[1].CashFlow.CapitalExpenditures | millionsDisplay}}</td>
                         <td>{{result.Financials[2].CashFlow.CapitalExpenditures | millionsDisplay}}</td>
                     </tr>
 
-                    <tr v-if="result.Financials[0].CashFlow.FreeCashFlow > 0">
+                    <tr v-if="result.Financials[2].CashFlow.FreeCashFlow != 0">
                         <th>Free Cash Flow</th>
                         <td>{{result.Financials[0].CashFlow.FreeCashFlow | millionsDisplay}}</td>
                         <td>{{result.Financials[1].CashFlow.FreeCashFlow | millionsDisplay}}</td>
