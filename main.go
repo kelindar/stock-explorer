@@ -45,20 +45,9 @@ func main() {
 	// Subscribe to the request channel
 	c.Subscribe("FKLs16Vo7W4RjYCvU86Nk0GvHNi5AK8t", "quote-request")
 
-	fmt.Println("Service running...")
+	fmt.Println("Service is running, open up the index.html...")
 	for {
 		time.Sleep(100)
 	}
-
-	//symbols := []string{"WSR", "APLE", "BRG", "EPR", "OAKS", "GOOD"}
-	/*for _, quote := range quotes {
-		fmt.Printf("%v\n", quote.Name)
-		fmt.Printf("Last year dividend frequency: %v\n", quote.GetLastYearDividendFrequency())
-		fmt.Printf("Growth: %v, %v\n", quote.GetGrowth(), quote.GetRevenueGrowth())
-		fmt.Printf("Profitability: %v, %v\n", quote.GetProfitability(), quote.GetFFOGrowth())
-
-		//spew.Dump(quote)
-
-	}*/
 
 }
