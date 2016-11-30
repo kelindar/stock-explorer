@@ -1,4 +1,4 @@
-package scrape
+package provider
 
 import (
 	"fmt"
@@ -115,14 +115,14 @@ func readValue(data [][]string, name string, offset int) float64 {
 		}
 
 		if row[0] == name {
-			return readFloat(row[offset])
+			return scrapeFloat(row[offset])
 		}
 	}
 	return 0
 }
 
 // Reads a float, safely
-func readFloat(data string) float64 {
+func scrapeFloat(data string) float64 {
 	data = strings.Replace(data, ",", "", -1)
 	result, err := strconv.ParseFloat(data, 64)
 	if err != nil {

@@ -6,12 +6,12 @@ import (
 
 	"time"
 
-	"./finance/yahoo"
+	"./finance/provider"
 	emitter "github.com/emitter-io/go"
 )
 
 func main() {
-	provider := yahoo.NewProvider()
+	p := provider.NewProvider()
 	o := emitter.NewClientOptions()
 
 	// Set the message handler
@@ -25,7 +25,7 @@ func main() {
 			return
 		}
 
-		quotes, err := provider.GetQuotes(request["symbol"])
+		quotes, err := p.GetQuotes(request["symbol"])
 		if err != nil {
 			fmt.Println("Error: Unable to process the request")
 			return

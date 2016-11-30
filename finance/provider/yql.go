@@ -1,4 +1,4 @@
-package yahoo
+package provider
 
 import (
 	"database/sql"

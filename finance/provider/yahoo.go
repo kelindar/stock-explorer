@@ -1,4 +1,4 @@
-package yahoo
+package provider
 
 import (
 	"database/sql"
@@ -7,8 +7,6 @@ import (
 	"time"
 
 	"../"
-	"../scrape"
-	"github.com/aktau/gofinance/util"
 )
 
 // Provider provides a Query interface implementation
@@ -120,7 +118,7 @@ func (p *Provider) GetDividendHistory(symbol string) ([]finance.DividendEntry, e
 
 // GetFinancials gets the financial information for the symbol
 func (p *Provider) GetFinancials(symbol string) ([]finance.Financials, error) {
-	m := scrape.NewMorningstar()
+	m := NewMorningstar()
 	return m.GetFinancials(symbol)
 }
 
@@ -178,8 +176,16 @@ func readFloat(data map[string]interface{}, name string) float64 {
 
 // Format symbols for WHERE clause
 func quoteSymbols(symbols []string) string {
-	quotedSymbols := util.MapStr(func(s string) string {
+	quotedSymbols := mapStr(func(s string) string {
 		return `"` + s + `"`
 	}, symbols)
 	return strings.Join(quotedSymbols, ",")
+}
+
+func mapStr(mapping func(string) string, xs []string) []string {
+	mxs := make([]string, 0, len(xs))
+	for _, s := range xs {
+		mxs = append(mxs, mapping(s))
+	}
+	return mxs
 }
