@@ -7,6 +7,8 @@ ADD . /go/src/github.com/kelindar/stock-explorer
 #RUN go get -d github.com/kelindar/stock-explorer
 #RUN go install github.com/kelindar/stock-explorer
 
+ADD deploy.sh /
+
 # set the entry point
 #ENTRYPOINT /go/bin/stock-explorer
-CMD ["/bin/bash", "/docker/deploy.sh"]
+CMD ["/bin/bash", "/deploy.sh"]
