@@ -5,7 +5,7 @@ MAINTAINER Roman Atachiants "roman@misakai.com"
 ADD . /go/src/github.com/kelindar/stock-explorer
 RUN go get golang.org/x/net/html
 RUN go get github.com/akrennmair/goauth
-#RUN go install github.com/kelindar/stock-explorer
+RUN go get github.com/emitter-io/go
 
 ADD deploy.sh /
 
