@@ -1,6 +1,7 @@
 package scrape
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
 	"strings"
@@ -55,6 +56,10 @@ func (p *Morningstar) GetFinancials(symbol string) ([]finance.Financials, error)
 	const y1offset = 1
 	const y2offset = 2
 	const y3offset = 3
+
+	if len(parsed) < 3 {
+		return nil, fmt.Errorf("morningstar: no data available")
+	}
 
 	for _, offset := range offsets {
 		date, _ := time.Parse("2006-1", parsed[2][offset])

@@ -27,6 +27,9 @@ func (q *Quote) GetLastYearDividendFrequency() int {
 
 // GetRevenueGrowth gets the average revenue growth
 func (q *Quote) GetRevenueGrowth() float64 {
+	if q.Financials == nil {
+		return 0
+	}
 
 	y1 := q.Financials[0].Income.Revenue
 	y2 := q.Financials[1].Income.Revenue
@@ -49,6 +52,9 @@ func (q *Quote) GetRevenueGrowth() float64 {
 
 // GetFFOGrowth gets the average cash from operations growth
 func (q *Quote) GetFFOGrowth() float64 {
+	if q.Financials == nil {
+		return 0
+	}
 
 	y1 := q.Financials[0].CashFlow.CashFromOperations
 	y2 := q.Financials[1].CashFlow.CashFromOperations
