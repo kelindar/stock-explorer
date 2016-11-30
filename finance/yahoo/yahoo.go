@@ -70,6 +70,11 @@ func (p *Provider) GetQuotes(symbols ...string) ([]finance.Quote, error) {
 		quote.Ma50 = readFloat(data, "FiftydayMovingAverage")
 		quote.Ma200 = readFloat(data, "TwoHundreddayMovingAverage")
 
+		// for each symbol we query, query the financials along with
+		// the dividend history.
+		quote.Financials, _ = p.GetFinancials(quote.Symbol)
+		quote.DividendHistory, _ = p.GetDividendHistory(quote.Symbol)
+
 		result = append(result, quote)
 	}
 

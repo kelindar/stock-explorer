@@ -3,6 +3,7 @@ package scrape
 import (
 	"net/http"
 	"strconv"
+	"strings"
 	"time"
 
 	"../"
@@ -81,7 +82,6 @@ func (p *Morningstar) GetFinancials(symbol string) ([]finance.Financials, error)
 		f.Balance.TotalAssets = readFloat(parsed[12][offset])
 		f.Balance.CurrentLiabilities = readFloat(parsed[13][offset])
 		f.Balance.TotalLiabilities = readFloat(parsed[14][offset])
-		f.Balance.StockholdersEquity = readFloat(parsed[15][offset])
 
 		// process cash flow sheet
 		f.CashFlow = finance.CashFlow{}
@@ -90,6 +90,8 @@ func (p *Morningstar) GetFinancials(symbol string) ([]finance.Financials, error)
 		f.CashFlow.CashFromOperations = readFloat(parsed[17][offset])
 		f.CashFlow.CapitalExpenditures = readFloat(parsed[18][offset])
 		f.CashFlow.FreeCashFlow = readFloat(parsed[19][offset])
+
+		result = append(result, f)
 	}
 
 	return result, nil
@@ -97,6 +99,7 @@ func (p *Morningstar) GetFinancials(symbol string) ([]finance.Financials, error)
 
 // Reads a float, safely
 func readFloat(data string) float64 {
+	data = strings.Replace(data, ",", "", -1)
 	result, err := strconv.ParseFloat(data, 64)
 	if err != nil {
 		return 0
