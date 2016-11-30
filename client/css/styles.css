@@ -1,0 +1,43 @@
+﻿
+@import url(https://fonts.googleapis.com/css?family=Roboto+Condensed);
+
+body{
+	background-color: rgb(244, 244, 244);
+	font-family: "Roboto Condensed";
+}
+
+[class^="icon-"]:before,
+[class*=" icon-"]:before {
+  font-family: FontAwesome;
+  font-weight: normal;
+  font-style: normal;
+  display: inline-block;
+  text-decoration: inherit;
+}
+
+.red { color: red; }
+.red:before {
+  font-family: FontAwesome;
+  font-weight: normal;
+  font-style: normal;
+  display: inline-block;
+  text-decoration: inherit;
+  content: "\f175 \00a0 ";
+}
+
+.green { color: green }
+.green:before {
+  font-family: FontAwesome;
+  font-weight: normal;
+  font-style: normal;
+  display: inline-block;
+  text-decoration: inherit;
+  content: "\f176 \00a0 ";
+}
+
+.left {text-align: left}
+.right {text-align: right}
+.ct-label{
+	font-size: 0.90rem;
+	color: #000
+}

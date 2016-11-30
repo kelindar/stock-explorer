@@ -75,6 +75,11 @@ func (p *Provider) GetQuotes(symbols ...string) ([]finance.Quote, error) {
 		quote.Financials, _ = p.GetFinancials(quote.Symbol)
 		quote.DividendHistory, _ = p.GetDividendHistory(quote.Symbol)
 
+		// Compute indicators
+		quote.DividendFrequency = quote.GetLastYearDividendFrequency()
+		quote.Profitability = quote.GetProfitability()
+		quote.Growth = quote.GetGrowth()
+
 		result = append(result, quote)
 	}
 
@@ -87,7 +92,7 @@ func (p *Provider) GetDividendHistory(symbol string) ([]finance.DividendEntry, e
 	stmt, err := db.Query(
 		"select * from yahoo.finance.dividendhistory where symbol = ? and startDate = ? and endDate = ?",
 		symbol,
-		time.Now().AddDate(-5, 0, 0).Format("2006-01-02"),
+		time.Now().AddDate(-3, 0, 0).Format("2006-01-02"),
 		time.Now().Format("2006-01-02"))
 	if err != nil {
 		return nil, err

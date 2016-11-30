@@ -44,6 +44,11 @@ type Quote struct {
 	YearLow, YearHigh   float64
 	Ma50, Ma200         float64 // 200- and 50-day moving average
 	Financials          []Financials
+
+	// indicators
+	Profitability     string
+	Growth            string
+	DividendFrequency int
 }
 
 // Financials represents financials for a symbol
